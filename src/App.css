@@ -1,10 +1,43 @@
 .app-shell {
+  position: relative;
   display: flex;
   flex-direction: column;
+  isolation: isolate;
+  overflow: hidden;
   min-height: 100vh;
+  background:
+    linear-gradient(180deg, rgba(244, 247, 251, 0.92), rgba(244, 247, 251, 0.98)),
+    radial-gradient(circle at 12% 18%, rgba(5, 169, 232, 0.22), transparent 28%),
+    radial-gradient(circle at 88% 12%, rgba(255, 183, 3, 0.22), transparent 24%),
+    radial-gradient(circle at 72% 76%, rgba(5, 169, 232, 0.16), transparent 30%),
+    var(--color-bg);
+}
+
+.app-shell::before,
+.app-shell::after {
+  position: absolute;
+  inset: 140px 0 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+}
+
+.app-shell::before {
+  background:
+    linear-gradient(115deg, transparent 0 18%, rgba(5, 169, 232, 0.1) 18% 19%, transparent 19% 52%, rgba(255, 183, 3, 0.12) 52% 53%, transparent 53%),
+    linear-gradient(65deg, transparent 0 34%, rgba(5, 169, 232, 0.08) 34% 35%, transparent 35% 78%, rgba(255, 183, 3, 0.1) 78% 79%, transparent 79%);
+}
+
+.app-shell::after {
+  opacity: 0.5;
+  background-image:
+    linear-gradient(rgba(5, 169, 232, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(5, 169, 232, 0.08) 1px, transparent 1px);
+  background-size: 42px 42px;
 }
 
 .page-container {
+  position: relative;
   flex: 1;
   width: min(1120px, calc(100% - 32px));
   margin: 0 auto;

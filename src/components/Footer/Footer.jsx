@@ -1,12 +1,13 @@
 import { Link } from 'react-router-dom'
-import { Mail, MapPin, MessageCircle, Phone, Send, ShoppingCart } from 'lucide-react'
+import { Mail, MapPin, MessageCircle, Phone, Send } from 'lucide-react'
+import logo from '../../assets/logo-letras.png'
 import './Footer.css'
 
 const footerLinks = [
-  { label: 'Inicio', to: '/' },
+  { label: 'Inicio', to: '/#inicio' },
   { label: 'Catalogo', to: '/catalogo' },
-  { label: 'Quienes Somos', to: '/quienes-somos' },
-  { label: 'Recomendaciones', to: '/recomendaciones' },
+  { label: 'Quienes Somos', to: '/#somos' },
+  { label: 'Recomendaciones', to: '/#recomendaciones' },
   { label: 'Contacto', to: '/contacto' },
 ]
 
@@ -15,8 +16,7 @@ export function Footer() {
     <footer className="site-footer">
       <div className="site-footer__content">
         <section className="site-footer__brand" aria-label="Vende Facil">
-          <ShoppingCart className="site-footer__brand-icon" strokeWidth={2.5} />
-          <span className="site-footer__brand-name">Vende Facil</span>
+          <img className="site-footer__logo" src={logo} alt="Vende Facil" />
           <p>Tu espacio para comprar y vender productos de forma sencilla.</p>
         </section>
 

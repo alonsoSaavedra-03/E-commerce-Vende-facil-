@@ -1,21 +1,21 @@
-import { NavLink } from 'react-router-dom'
-import { Search, ShoppingCart, Truck, UserRound } from 'lucide-react'
+import { Link, NavLink } from 'react-router-dom'
+import { Search, Truck, UserRound } from 'lucide-react'
+import logo from '../../assets/logo-letras.png'
 import './Navbar.css'
 
 const navigationItems = [
-  { label: 'Inicio', to: '/' },
-  { label: 'Catalogo', to: '/catalogo' },
-  { label: 'Quienes Somos', to: '/quienes-somos' },
-  { label: 'Recomendaciones', to: '/recomendaciones' },
-  { label: 'Contacto', to: '/contacto' },
+  { label: 'Inicio', to: '/', type: 'section' },
+  { label: 'Catalogo', to: '/catalogo', type: 'page' },
+  { label: 'Quienes Somos', to: '/#somos', type: 'section' },
+  { label: 'Recomendaciones', to: '/#recomendaciones', type: 'section' },
+  { label: 'Contacto', to: '/contacto', type: 'page' },
 ]
 
 export function Navbar() {
   return (
     <header className="site-header">
       <div className="site-header__brand" aria-label="Vende Facil">
-        <ShoppingCart className="site-header__brand-icon" strokeWidth={2.5} />
-        <span className="site-header__brand-name">Vende Facil</span>
+        <img className="site-header__logo" src={logo} alt="Vende Facil" />
       </div>
 
       <div className="site-header__center">
@@ -30,18 +30,23 @@ export function Navbar() {
         </form>
 
         <nav className="site-header__nav" aria-label="Navegacion principal">
-          {navigationItems.map((item) => (
-            <NavLink
-              className={({ isActive }) =>
-                isActive ? 'site-header__link is-active' : 'site-header__link'
-              }
-              end={item.to === '/'}
-              key={item.to}
-              to={item.to}
-            >
-              {item.label}
-            </NavLink>
-          ))}
+          {navigationItems.map((item) =>
+            item.type === 'section' ? (
+              <Link className="site-header__link" key={item.to} to={item.to}>
+                {item.label}
+              </Link>
+            ) : (
+              <NavLink
+                className={({ isActive }) =>
+                  isActive ? 'site-header__link is-active' : 'site-header__link'
+                }
+                key={item.to}
+                to={item.to}
+              >
+                {item.label}
+              </NavLink>
+            ),
+          )}
         </nav>
       </div>
 
@@ -49,9 +54,9 @@ export function Navbar() {
         <button type="button" aria-label="Envios">
           <Truck size={28} strokeWidth={2.4} />
         </button>
-        <button type="button" aria-label="Mi cuenta">
+        <Link to="/login" aria-label="Mi cuenta">
           <UserRound size={28} strokeWidth={2.4} />
-        </button>
+        </Link>
       </div>
     </header>
   )

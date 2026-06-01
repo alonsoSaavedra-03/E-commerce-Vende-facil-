@@ -1,15 +1,39 @@
-import { Route, Routes } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import { Footer } from './components/Footer'
 import { Navbar } from './components/Navbar'
-import { AboutPage } from './pages/About'
 import { CatalogPage } from './pages/Catalog'
 import { ContactPage } from './pages/Contact'
+import { DashboardPage } from './pages/Dashboard'
 import { HomePage } from './pages/Home'
-import { RecommendationsPage } from './pages/Recommendations'
+import { LoginPage } from './pages/Login'
+import { getBackendHealth } from './services/api'
 import './App.css'
 import './pages/Page.css'
 
 function App() {
+  const { pathname } = useLocation()
+  const isAdminPage = pathname === '/login' || pathname === '/dashboard'
+
+  useEffect(() => {
+    if (!import.meta.env.DEV) {
+      return
+    }
+
+    getBackendHealth()
+      .then((data) => console.info('Backend conectado:', data))
+      .catch((error) => console.warn('Backend no disponible:', error.message))
+  }, [])
+
+  if (isAdminPage) {
+    return (
+      <Routes>
+        <Route path="login" element={<LoginPage />} />
+        <Route path="dashboard" element={<DashboardPage />} />
+      </Routes>
+    )
+  }
+
   return (
     <div className="app-shell">
       <Navbar />
@@ -17,9 +41,9 @@ function App() {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path="catalogo" element={<CatalogPage />} />
-          <Route path="quienes-somos" element={<AboutPage />} />
-          <Route path="recomendaciones" element={<RecommendationsPage />} />
           <Route path="contacto" element={<ContactPage />} />
+          <Route path="login" element={<LoginPage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
         </Routes>
       </main>
       <Footer />

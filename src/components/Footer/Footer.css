@@ -20,30 +20,11 @@
   gap: 10px;
 }
 
-.site-footer__brand-icon {
-  width: 46px;
-  height: 46px;
-  color: var(--color-brand);
-}
-
-.site-footer__brand-name {
-  position: relative;
-  display: inline-flex;
-  color: var(--color-brand);
-  font-size: 24px;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.site-footer__brand-name::after {
-  position: absolute;
-  right: 0;
-  bottom: -8px;
-  left: 48px;
-  height: 4px;
-  content: "";
-  background: var(--color-brand-warm);
-  border-radius: 999px;
+.site-footer__logo {
+  display: block;
+  width: 142px;
+  height: auto;
+  object-fit: contain;
 }
 
 .site-footer__brand p,
@@ -54,7 +35,7 @@
 
 .site-footer__brand p {
   max-width: 280px;
-  margin: 12px 0 0;
+  margin: 0;
   line-height: 1.6;
 }
 

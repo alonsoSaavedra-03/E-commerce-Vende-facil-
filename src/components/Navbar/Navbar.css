@@ -12,39 +12,16 @@
 
 .site-header__brand {
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
   justify-self: start;
-  min-width: 112px;
   line-height: 1;
 }
 
-.site-header__brand-icon {
-  width: 58px;
-  height: 58px;
-  color: var(--color-brand);
-}
-
-.site-header__brand-name {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  color: var(--color-brand);
-  font-size: 22px;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.site-header__brand-name::after {
-  position: absolute;
-  right: 0;
-  bottom: -7px;
-  left: 54px;
-  height: 4px;
-  content: "";
-  background: var(--color-brand-warm);
-  border-radius: 999px;
+.site-header__logo {
+  display: block;
+  width: 126px;
+  height: auto;
+  object-fit: contain;
 }
 
 .site-header__center {
@@ -145,7 +122,8 @@
   justify-self: center;
 }
 
-.site-header__actions button {
+.site-header__actions button,
+.site-header__actions a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -155,12 +133,14 @@
   background: #d9d9d9;
   border: 0;
   border-radius: 50%;
+  text-decoration: none;
   transition:
     transform 180ms ease,
     background-color 180ms ease;
 }
 
-.site-header__actions button:hover {
+.site-header__actions button:hover,
+.site-header__actions a:hover {
   background: #ffffff;
   transform: translateY(-1px);
 }
