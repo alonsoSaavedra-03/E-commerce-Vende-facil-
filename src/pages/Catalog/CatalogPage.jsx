@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import {
   Armchair,
   BookOpen,
@@ -9,13 +10,8 @@ import {
   ShoppingCart,
   Undo2,
 } from 'lucide-react'
-import { getCategories, getProductsByCategory } from '../../services/api'
+import { getCategories, getProductsByCategory, getSettings } from '../../services/api'
 import './CatalogPage.css'
-
-const currencyFormatter = new Intl.NumberFormat('es-MX', {
-  style: 'currency',
-  currency: 'MXN',
-})
 
 const categoryIcons = {
   deportes: Dumbbell,
@@ -26,12 +22,31 @@ const categoryIcons = {
 }
 
 export function CatalogPage() {
+  const navigate = useNavigate()
   const [categories, setCategories] = useState([])
   const [products, setProducts] = useState([])
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [directAddMessage, setDirectAddMessage] = useState('')
+  
   const [isLoadingCategories, setIsLoadingCategories] = useState(true)
   const [isLoadingProducts, setIsLoadingProducts] = useState(false)
   const [error, setError] = useState('')
+  const [settings, setSettings] = useState(null)
+
+  useEffect(() => {
+    getSettings()
+      .then(({ data }) => setSettings(data))
+      .catch(console.error)
+  }, [])
+
+  const formatPrice = (price) => {
+    const currency = settings?.store_currency || 'MXN'
+    const locale = currency === 'USD' ? 'en-US' : currency === 'EUR' ? 'fr-FR' : 'es-MX'
+    return new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: currency,
+    }).format(price)
+  }
 
   useEffect(() => {
     let isMounted = true
@@ -83,6 +98,17 @@ export function CatalogPage() {
     setError('')
   }
 
+  function handleProductClick(product) {
+    navigate(`/producto/${product.id}`)
+  }
+
+  function handleAddToCartDirect(product) {
+    setDirectAddMessage(`¡"${product.name}" agregado al carrito! (Simulado)`)
+    setTimeout(() => {
+      setDirectAddMessage('')
+    }, 4000)
+  }
+
   return (
     <section className="catalog-page" aria-labelledby="catalog-title">
       <div className="catalog-page__header">
@@ -113,6 +139,23 @@ export function CatalogPage() {
         <div className="catalog-grid">
           {categories.map((category) => {
             const Icon = categoryIcons[category.slug] ?? PackageSearch
+            const isInactive = !category.is_active
+
+            if (isInactive) {
+              return (
+                <div
+                  className="catalog-card catalog-card--disabled"
+                  key={category.id}
+                >
+                  <Icon className="catalog-card__icon" size={34} strokeWidth={2.1} />
+                  <div>
+                    <h2>{category.name} <span className="inactive-badge">(Inactiva)</span></h2>
+                    <p>{category.description}</p>
+                    <span className="inactive-text">No disponible</span>
+                  </div>
+                </div>
+              )
+            }
 
             return (
               <button
@@ -151,27 +194,54 @@ export function CatalogPage() {
 
       {selectedCategory && !isLoadingProducts && !error && (
         <div className="catalog-grid">
-          {products.map((product) => (
-            <article className="product-card" key={product.id}>
-              <div className="product-card__media">
-                <PackageSearch size={44} strokeWidth={1.8} />
-              </div>
-              <div className="product-card__body">
-                <p className="product-card__category">{product.category?.name ?? 'Sin categoria'}</p>
-                <h2>{product.name}</h2>
-                <p>{product.description}</p>
-              </div>
-              <div className="product-card__footer">
-                <div>
-                  <strong>{currencyFormatter.format(Number(product.price))}</strong>
-                  <span>{product.stock} disponibles</span>
+          {products.map((product) => {
+            const isProductInactive = !product.is_active
+            return (
+              <article className={`product-card ${isProductInactive ? 'product-card--disabled' : ''}`} key={product.id}>
+                <div 
+                  className="product-card__media" 
+                  style={{ cursor: isProductInactive ? 'not-allowed' : 'pointer' }}
+                  onClick={() => !isProductInactive && handleProductClick(product)}
+                >
+                  {product.image ? (
+                    <img src={product.image} alt={product.name} />
+                  ) : (
+                    <PackageSearch size={44} strokeWidth={1.8} />
+                  )}
                 </div>
-                <button type="button" aria-label={`Agregar ${product.name} al carrito`}>
-                  <ShoppingCart size={18} strokeWidth={2.2} />
-                </button>
-              </div>
-            </article>
-          ))}
+                <div 
+                  className="product-card__body"
+                  style={{ cursor: isProductInactive ? 'not-allowed' : 'pointer' }}
+                  onClick={() => !isProductInactive && handleProductClick(product)}
+                >
+                  <p className="product-card__category">
+                    {product.category?.name ?? 'Sin categoria'}
+                    {isProductInactive && <span className="inactive-badge"> (Inactivo)</span>}
+                  </p>
+                  <h2>{product.name}</h2>
+                  <p>{product.description}</p>
+                </div>
+                <div className="product-card__footer">
+                  <div>
+                    <strong>{formatPrice(Number(product.price))}</strong>
+                    <span>{isProductInactive ? 'No disponible' : `${product.stock} disponibles`}</span>
+                  </div>
+                  {!isProductInactive && (
+                    <button 
+                      type="button" 
+                      aria-label={`Agregar ${product.name} al carrito`}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        handleAddToCartDirect(product)
+                      }}
+                    >
+                      <ShoppingCart size={18} strokeWidth={2.2} />
+                    </button>
+                  )}
+                </div>
+              </article>
+            )
+          })}
 
           {products.length === 0 && (
             <div className="catalog-state">
@@ -179,6 +249,13 @@ export function CatalogPage() {
               <p>No hay productos activos en esta categoria.</p>
             </div>
           )}
+        </div>
+      )}
+
+      {/* Floating Direct Cart Addition Alert */}
+      {directAddMessage && (
+        <div className="catalog-toast-alert">
+          <span>{directAddMessage}</span>
         </div>
       )}
     </section>
