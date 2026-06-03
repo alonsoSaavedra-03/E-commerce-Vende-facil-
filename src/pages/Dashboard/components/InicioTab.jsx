@@ -1,7 +1,11 @@
 import { Boxes, Coins, PackageCheck, Tags } from 'lucide-react'
 
-export function InicioTab({ stats }) {
-  const averagePrice = Number(stats?.average_price || 0).toFixed(2)
+export function InicioTab({ stats, storeCurrency }) {
+  const formatVal = (val) => {
+    const locale = storeCurrency === 'USD' ? 'en-US' : storeCurrency === 'EUR' ? 'fr-FR' : 'es-PE'
+    return new Intl.NumberFormat(locale, { style: 'currency', currency: storeCurrency }).format(val)
+  }
+  const averagePrice = formatVal(Number(stats?.average_price || 0))
   const totalProducts = stats?.total_products || 0
 
   return (
@@ -44,7 +48,7 @@ export function InicioTab({ stats }) {
         <article className="dashboard-stat-card-new">
           <div className="stat-card-info">
             <span>Precio Promedio</span>
-            <strong>${averagePrice}</strong>
+            <strong>{averagePrice}</strong>
             <small>Valor medio de catálogo</small>
           </div>
           <div className="stat-card-icon-wrapper">
@@ -80,7 +84,7 @@ export function InicioTab({ stats }) {
                             {prod.category?.name ?? 'Sin Categoría'}
                           </span>
                         </td>
-                        <td className="font-mono">${Number(prod.price || 0).toFixed(2)}</td>
+                        <td className="font-mono">{formatVal(prod.price || 0)}</td>
                         <td className="font-mono">{prod.stock} u.</td>
                       </tr>
                     ))}

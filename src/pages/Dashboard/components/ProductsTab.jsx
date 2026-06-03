@@ -8,6 +8,7 @@ export function ProductsTab({
   handleToggleProductActive,
   openEditProduct,
   handleDeleteProduct,
+  storeCurrency,
 }) {
   return (
     <div className="crud-container">
@@ -63,7 +64,10 @@ export function ProductsTab({
                     </span>
                   </td>
                   <td className="font-bold font-mono">
-                    ${Number(product.price).toFixed(2)}
+                    {new Intl.NumberFormat(
+                      storeCurrency === 'USD' ? 'en-US' : storeCurrency === 'EUR' ? 'fr-FR' : 'es-PE',
+                      { style: 'currency', currency: storeCurrency }
+                    ).format(Number(product.price))}
                   </td>
                   <td className="font-mono">{product.stock} u.</td>
                   <td>

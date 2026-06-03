@@ -42,8 +42,8 @@ export function ProductDetailPage() {
   }, [id])
 
   const formatPrice = (price) => {
-    const currency = settings?.store_currency || 'MXN'
-    const locale = currency === 'USD' ? 'en-US' : currency === 'EUR' ? 'fr-FR' : 'es-MX'
+    const currency = settings?.store_currency || 'PEN'
+    const locale = currency === 'USD' ? 'en-US' : currency === 'EUR' ? 'fr-FR' : 'es-PE'
     return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: currency,

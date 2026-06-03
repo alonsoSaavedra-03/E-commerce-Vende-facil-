@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import {
   Armchair,
   BookOpen,
@@ -23,6 +23,7 @@ const categoryIcons = {
 
 export function CatalogPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const [categories, setCategories] = useState([])
   const [products, setProducts] = useState([])
   const [selectedCategory, setSelectedCategory] = useState(null)
@@ -40,8 +41,8 @@ export function CatalogPage() {
   }, [])
 
   const formatPrice = (price) => {
-    const currency = settings?.store_currency || 'MXN'
-    const locale = currency === 'USD' ? 'en-US' : currency === 'EUR' ? 'fr-FR' : 'es-MX'
+    const currency = settings?.store_currency || 'PEN'
+    const locale = currency === 'USD' ? 'en-US' : currency === 'EUR' ? 'fr-FR' : 'es-PE'
     return new Intl.NumberFormat(locale, {
       style: 'currency',
       currency: currency,
@@ -73,6 +74,19 @@ export function CatalogPage() {
       isMounted = false
     }
   }, [])
+
+  useEffect(() => {
+    if (!isLoadingCategories && categories.length > 0) {
+      const searchParams = new URLSearchParams(location.search)
+      const catSlug = searchParams.get('category') || location.state?.categorySlug
+      if (catSlug) {
+        const found = categories.find(c => c.slug === catSlug)
+        if (found) {
+          handleCategoryClick(found)
+        }
+      }
+    }
+  }, [location, categories, isLoadingCategories])
 
   function handleCategoryClick(category) {
     setSelectedCategory(category)

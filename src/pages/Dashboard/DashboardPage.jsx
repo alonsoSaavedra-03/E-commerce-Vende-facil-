@@ -128,11 +128,12 @@ export function DashboardPage() {
     store_name: '',
     store_email: '',
     store_phone: '',
-    store_currency: 'MXN',
+    store_currency: 'PEN',
     store_shipping_fee: '0',
     store_free_shipping_threshold: '0',
     store_address: '',
     system_maintenance: '0',
+    home_banners: '',
   })
 
   // Load data based on tab
@@ -246,11 +247,12 @@ export function DashboardPage() {
         store_name: data.store_name || '',
         store_email: data.store_email || '',
         store_phone: data.store_phone || '',
-        store_currency: data.store_currency || 'MXN',
+        store_currency: data.store_currency || 'PEN',
         store_shipping_fee: data.store_shipping_fee || '0',
         store_free_shipping_threshold: data.store_free_shipping_threshold || '0',
         store_address: data.store_address || '',
         system_maintenance: data.system_maintenance || '0',
+        home_banners: data.home_banners || '',
       })
     } catch (err) {
       console.error(err)
@@ -844,7 +846,7 @@ export function DashboardPage() {
 
         {/* Dynamic Views */}
         {!isLoading && activeTab === 'inicio' && (
-          <InicioTab stats={stats} />
+          <InicioTab stats={stats} storeCurrency={settingsForm.store_currency || 'PEN'} />
         )}
 
         {!isLoading && activeTab === 'users' && (
@@ -874,6 +876,7 @@ export function DashboardPage() {
             handleToggleProductActive={handleToggleProductActive}
             openEditProduct={openEditProduct}
             handleDeleteProduct={handleDeleteProduct}
+            storeCurrency={settingsForm.store_currency || 'PEN'}
           />
         )}
 
@@ -888,6 +891,8 @@ export function DashboardPage() {
         {!isLoading && activeTab === 'settings' && (
           <SettingsTab
             settingsForm={settingsForm}
+            setSettingsForm={setSettingsForm}
+            categories={categories}
             handleSettingsChange={handleSettingsChange}
             handleSettingsSubmit={handleSettingsSubmit}
             handleClearCache={handleClearCache}
@@ -899,6 +904,7 @@ export function DashboardPage() {
 
       {/* Drawer Overlay for CRUD Forms */}
       <CrudDrawer
+        storeCurrency={settingsForm.store_currency || 'PEN'}
         isFormOpen={isFormOpen}
         setIsFormOpen={setIsFormOpen}
         formType={formType}

@@ -1,6 +1,7 @@
 import { Boxes, X } from 'lucide-react'
 
 export function CrudDrawer({
+  storeCurrency,
   isFormOpen,
   setIsFormOpen,
   formType,
@@ -171,7 +172,7 @@ export function CrudDrawer({
 
               <div className="form-row">
                 <div className="form-group">
-                  <label htmlFor="prod-price">Precio (MXN) *</label>
+                  <label htmlFor="prod-price">Precio ({storeCurrency}) *</label>
                   <input
                     id="prod-price"
                     type="number"
