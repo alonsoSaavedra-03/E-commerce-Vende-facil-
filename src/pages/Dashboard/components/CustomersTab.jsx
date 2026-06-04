@@ -8,7 +8,7 @@ export function CustomersTab({
   return (
     <div className="crud-container">
       <div className="crud-table-wrapper">
-        <table className="crud-table">
+        <table className="crud-table crud-table--customers">
           <thead>
             <tr>
               <th>ID</th>

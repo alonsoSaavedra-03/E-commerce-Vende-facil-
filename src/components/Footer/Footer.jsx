@@ -17,7 +17,7 @@ export function Footer() {
       <div className="site-footer__content">
         <section className="site-footer__brand" aria-label="Vende Facil">
           <img className="site-footer__logo" src={logo} alt="Vende Facil" />
-          <p>Tu espacio para comprar y vender productos de forma sencilla.</p>
+          <p>Tu tienda virtual de confianza. Compras sencillas, envíos rápidos y soporte directo.</p>
         </section>
 
         <section className="site-footer__section" aria-labelledby="footer-links-title">
@@ -36,15 +36,15 @@ export function Footer() {
           <ul className="site-footer__contact">
             <li>
               <Phone size={18} strokeWidth={2.2} />
-              <span>+52 000 000 0000</span>
+              <a href="https://wa.me/51923388220" target="_blank" rel="noreferrer">+51 923 388 220</a>
             </li>
             <li>
               <Mail size={18} strokeWidth={2.2} />
-              <span>contacto@vendefacil.com</span>
+              <a href="mailto:donayrealonso987@gmail.com">donayrealonso987@gmail.com</a>
             </li>
             <li>
               <MapPin size={18} strokeWidth={2.2} />
-              <span>Mexico</span>
+              <span>Tienda Virtual (Envíos a todo el Perú)</span>
             </li>
           </ul>
         </section>
@@ -63,9 +63,10 @@ export function Footer() {
       </div>
 
       <div className="site-footer__bottom">
-        <span>Vende Facil</span>
+        <span>&copy; 2026 VendeFacil.</span>
         <span>Todos los derechos reservados.</span>
       </div>
     </footer>
   )
 }
+

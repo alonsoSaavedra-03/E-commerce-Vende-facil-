@@ -8,13 +8,21 @@ import { DashboardPage } from './pages/Dashboard'
 import { HomePage } from './pages/Home'
 import { LoginPage } from './pages/Login'
 import { ProductDetailPage } from './pages/ProductDetail'
+import { CartPage } from './pages/Cart'
 import { getBackendHealth, getSettings } from './services/api'
 import './App.css'
 import './pages/Page.css'
 
 function App() {
-  const { pathname } = useLocation()
+  const { pathname, hash } = useLocation()
   const isAdminPage = pathname === '/login' || pathname === '/dashboard'
+
+  // Scroll to top on page change if there is no hash anchor
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo(0, 0)
+    }
+  }, [pathname, hash])
   
   // Route Guards
   const userString = localStorage.getItem('user')
@@ -105,6 +113,7 @@ function App() {
           <Route path="catalogo" element={<CatalogPage />} />
           <Route path="producto/:id" element={<ProductDetailPage />} />
           <Route path="contacto" element={<ContactPage />} />
+          <Route path="carrito" element={<CartPage />} />
           <Route path="login" element={<LoginPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
         </Routes>

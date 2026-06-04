@@ -10,7 +10,7 @@ import {
   ShoppingCart,
   Undo2,
 } from 'lucide-react'
-import { getCategories, getProductsByCategory, getSettings } from '../../services/api'
+import { getCategories, getProductsByCategory, getSettings, searchProducts } from '../../services/api'
 import './CatalogPage.css'
 
 const categoryIcons = {
@@ -27,6 +27,7 @@ export function CatalogPage() {
   const [categories, setCategories] = useState([])
   const [products, setProducts] = useState([])
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [searchQuery, setSearchQuery] = useState('')
   const [directAddMessage, setDirectAddMessage] = useState('')
   
   const [isLoadingCategories, setIsLoadingCategories] = useState(true)
@@ -76,40 +77,62 @@ export function CatalogPage() {
   }, [])
 
   useEffect(() => {
-    if (!isLoadingCategories && categories.length > 0) {
+    if (!isLoadingCategories) {
       const searchParams = new URLSearchParams(location.search)
+      const searchVal = searchParams.get('search')
       const catSlug = searchParams.get('category') || location.state?.categorySlug
-      if (catSlug) {
+
+      if (searchVal) {
+        setSelectedCategory(null)
+        setSearchQuery(searchVal)
+        setProducts([])
+        setError('')
+        setIsLoadingProducts(true)
+
+        searchProducts(searchVal)
+          .then(({ data }) => {
+            setProducts(data)
+          })
+          .catch(() => {
+            setError('No pudimos cargar los productos de la búsqueda.')
+          })
+          .finally(() => {
+            setIsLoadingProducts(false)
+          })
+      } else if (catSlug && categories.length > 0) {
         const found = categories.find(c => c.slug === catSlug)
         if (found) {
-          handleCategoryClick(found)
+          setSelectedCategory(found)
+          setSearchQuery('')
+          setProducts([])
+          setError('')
+          setIsLoadingProducts(true)
+
+          getProductsByCategory(found.slug)
+            .then(({ data }) => {
+              setProducts(data)
+            })
+            .catch(() => {
+              setError('No pudimos cargar los productos de esta categoria.')
+            })
+            .finally(() => {
+              setIsLoadingProducts(false)
+            })
         }
+      } else {
+        setSelectedCategory(null)
+        setSearchQuery('')
+        setProducts([])
       }
     }
   }, [location, categories, isLoadingCategories])
 
   function handleCategoryClick(category) {
-    setSelectedCategory(category)
-    setProducts([])
-    setError('')
-    setIsLoadingProducts(true)
-
-    getProductsByCategory(category.slug)
-      .then(({ data }) => {
-        setProducts(data)
-      })
-      .catch(() => {
-        setError('No pudimos cargar los productos de esta categoria.')
-      })
-      .finally(() => {
-        setIsLoadingProducts(false)
-      })
+    navigate(`/catalogo?category=${category.slug}`)
   }
 
   function handleBackToCategories() {
-    setSelectedCategory(null)
-    setProducts([])
-    setError('')
+    navigate('/catalogo')
   }
 
   function handleProductClick(product) {
@@ -127,11 +150,18 @@ export function CatalogPage() {
     <section className="catalog-page" aria-labelledby="catalog-title">
       <div className="catalog-page__header">
         <p className="page-section__eyebrow">Catalogo</p>
-        <h1 id="catalog-title">{selectedCategory ? selectedCategory.name : 'Explorar productos'}</h1>
+        <h1 id="catalog-title">
+          {searchQuery 
+            ? `Resultados para "${searchQuery}"` 
+            : (selectedCategory ? selectedCategory.name : 'Explorar productos')
+          }
+        </h1>
         <p>
-          {selectedCategory
-            ? selectedCategory.description
-            : 'Encuentra rapido la categoria que necesitas y empieza a descubrir productos de VendeFacil.'}
+          {searchQuery
+            ? `Mostrando productos que coinciden con tu búsqueda.`
+            : (selectedCategory
+              ? selectedCategory.description
+              : 'Encuentra rapido la categoria que necesitas y empieza a descubrir productos de VendeFacil.')}
         </p>
       </div>
 
@@ -149,7 +179,7 @@ export function CatalogPage() {
         </div>
       )}
 
-      {!isLoadingCategories && !error && !selectedCategory && (
+      {!isLoadingCategories && !error && !selectedCategory && !searchQuery && (
         <div className="catalog-grid">
           {categories.map((category) => {
             const Icon = categoryIcons[category.slug] ?? PackageSearch
@@ -190,7 +220,7 @@ export function CatalogPage() {
         </div>
       )}
 
-      {selectedCategory && (
+      {(selectedCategory || searchQuery) && (
         <div className="catalog-toolbar">
           <button type="button" onClick={handleBackToCategories}>
             <Undo2 size={18} strokeWidth={2.2} />
@@ -199,14 +229,14 @@ export function CatalogPage() {
         </div>
       )}
 
-      {selectedCategory && isLoadingProducts && (
+      {(selectedCategory || searchQuery) && isLoadingProducts && (
         <div className="catalog-state">
           <PackageSearch size={30} strokeWidth={2} />
           <p>Cargando productos...</p>
         </div>
       )}
 
-      {selectedCategory && !isLoadingProducts && !error && (
+      {(selectedCategory || searchQuery) && !isLoadingProducts && !error && (
         <div className="catalog-grid">
           {products.map((product) => {
             const isProductInactive = !product.is_active
@@ -243,13 +273,10 @@ export function CatalogPage() {
                   {!isProductInactive && (
                     <button 
                       type="button" 
-                      aria-label={`Agregar ${product.name} al carrito`}
-                      onClick={(e) => {
-                        e.stopPropagation()
-                        handleAddToCartDirect(product)
-                      }}
+                      className="product-card__view-btn"
+                      onClick={() => handleProductClick(product)}
                     >
-                      <ShoppingCart size={18} strokeWidth={2.2} />
+                      Ver producto
                     </button>
                   )}
                 </div>
@@ -260,7 +287,7 @@ export function CatalogPage() {
           {products.length === 0 && (
             <div className="catalog-state">
               <PackageSearch size={30} strokeWidth={2} />
-              <p>No hay productos activos en esta categoria.</p>
+              <p>No se encontraron productos activos.</p>
             </div>
           )}
         </div>

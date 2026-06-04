@@ -182,6 +182,31 @@
   box-shadow: 0 4px 12px rgba(5, 169, 232, 0.2);
 }
 
+.btn-quote-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 48px;
+  padding: 0 28px;
+  color: #ffffff;
+  background: #25d366;
+  border: 0;
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex: 1;
+  max-width: 240px;
+}
+
+.btn-quote-whatsapp:hover {
+  background: #20ba5a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
 .success-add-toast {
   display: flex;
   align-items: center;

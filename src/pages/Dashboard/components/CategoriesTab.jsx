@@ -9,7 +9,7 @@ export function CategoriesTab({
   return (
     <div className="crud-container">
       <div className="crud-table-wrapper">
-        <table className="crud-table">
+        <table className="crud-table crud-table--categories">
           <thead>
             <tr>
               <th>ID</th>

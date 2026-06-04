@@ -9,11 +9,23 @@ export function HomePage() {
   const { hash } = useLocation()
 
   useEffect(() => {
-    const targetId = hash.replace('#', '') || 'inicio'
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
+
+    const targetId = hash.replace('#', '')
     const targetElement = document.getElementById(targetId)
 
     if (targetElement) {
-      targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const navbarHeight = 140
+      const elementPosition = targetElement.getBoundingClientRect().top + window.scrollY
+      const offsetPosition = elementPosition - navbarHeight
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth',
+      })
     }
   }, [hash])
 

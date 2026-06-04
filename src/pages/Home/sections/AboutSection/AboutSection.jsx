@@ -1,34 +1,34 @@
-import { BadgeCheck, Handshake, ShieldCheck, TrendingUp } from 'lucide-react'
+import { BadgeCheck, ShieldCheck, Award, MessageSquare } from 'lucide-react'
 import './AboutSection.css'
 
 const missionVision = [
   {
-    title: 'Mision',
+    title: 'Nuestra Misión',
     description:
-      'Facilitar la compra y venta de productos mediante una plataforma clara, accesible y confiable para cualquier usuario.',
+      'Simplificar y enriquecer la experiencia de compra en línea, conectando a nuestros clientes con productos excepcionales de forma segura, rápida y con un acompañamiento cercano en cada etapa de su compra.',
   },
   {
-    title: 'Vision',
+    title: 'Nuestra Visión',
     description:
-      'Convertir a Vende Facil en una tienda digital reconocida por su organizacion, cercania y capacidad de crecimiento.',
+      'Ser el destino de comercio electrónico preferido en la región, reconocidos por nuestra integridad, innovación continua en la atención al cliente y por crear un ecosistema digital transparente y sin fricciones.',
   },
 ]
 
 const values = [
   {
-    title: 'Confianza',
-    description: 'Procesos claros para que cada compra se sienta segura.',
+    title: 'Integridad',
+    description: 'Garantizamos total transparencia en la calidad de nuestros productos, precios y tiempos de entrega.',
     icon: ShieldCheck,
   },
   {
-    title: 'Cercania',
-    description: 'Una experiencia simple para clientes y vendedores.',
-    icon: Handshake,
+    title: 'Excelencia',
+    description: 'Buscamos superar expectativas mediante una rigurosa curaduría de inventario y procesos de despacho ágiles.',
+    icon: Award,
   },
   {
-    title: 'Crecimiento',
-    description: 'Herramientas listas para escalar el catalogo del negocio.',
-    icon: TrendingUp,
+    title: 'Cercanía',
+    description: 'Creemos en la comunicación directa. Respondemos tus consultas en tiempo real y te asesoramos vía WhatsApp.',
+    icon: MessageSquare,
   },
 ]
 
@@ -37,41 +37,38 @@ export function AboutSection() {
     <section className="about-section" id="somos">
       <div className="about-section__content">
         <div className="about-section__copy">
-          <p className="page-section__eyebrow">Quienes Somos</p>
-          <h1>Vende Facil, una tienda digital pensada para comprar con confianza.</h1>
+          <p className="page-section__eyebrow">Quiénes Somos</p>
+          <h1>Tu tienda de confianza con atención personalizada en cada compra.</h1>
           <p>
-            Vende Facil conecta productos, vendedores y clientes en una
-            experiencia clara, rapida y confiable. Nuestra meta es que cada
-            usuario encuentre lo que necesita sin friccion, con informacion
-            ordenada y canales de contacto directos.
+            En nuestra plataforma nos dedicamos a tender puentes entre la calidad y la comodidad. Cada artículo de nuestro catálogo ha sido rigurosamente verificado para garantizar que recibes exactamente lo que esperas, con envíos rápidos y el respaldo constante de nuestro equipo.
           </p>
         </div>
 
-        <aside className="about-section__panel" aria-label="Resumen de Vende Facil">
-          <BadgeCheck size={34} strokeWidth={2.2} />
-          <strong>Compra organizada, atencion cercana y una base lista para crecer.</strong>
-          <span>Proyecto e-commerce en desarrollo</span>
+        <aside className="about-section__panel" aria-label="Compromiso Ingenia">
+          <BadgeCheck size={36} strokeWidth={2} className="about-section__panel-icon" />
+          <strong>Calidad garantizada, soporte humano y compras 100% seguras.</strong>
+          <span>El Compromiso Ingenia</span>
         </aside>
       </div>
 
-      <div className="about-section__stats" aria-label="Puntos clave">
-        <article>
-          <strong>24/7</strong>
-          <span>Catalogo disponible</span>
+      <div className="about-section__stats" aria-label="Estadísticas de la empresa">
+        <article className="about-stat-card">
+          <strong>+5,000</strong>
+          <span>Entregas Exitosas</span>
         </article>
-        <article>
-          <strong>+6</strong>
-          <span>Categorias iniciales</span>
+        <article className="about-stat-card">
+          <strong>24 / 7</strong>
+          <span>Soporte & Asesoría</span>
         </article>
-        <article>
+        <article className="about-stat-card">
           <strong>100%</strong>
-          <span>Diseno responsive</span>
+          <span>Clientes Satisfechos</span>
         </article>
       </div>
 
       <div className="about-section__mission">
         {missionVision.map(({ description, title }) => (
-          <article key={title}>
+          <article key={title} className="about-mission-card">
             <h2>{title}</h2>
             <p>{description}</p>
           </article>
@@ -80,14 +77,16 @@ export function AboutSection() {
 
       <div className="about-section__values-header">
         <p className="page-section__eyebrow">Valores</p>
-        <h2>Principios que guian la experiencia.</h2>
+        <h2>Los principios que guían nuestra experiencia</h2>
       </div>
 
       <div className="about-section__values">
         {values.map(({ description, icon: Icon, title }) => (
           <article className="about-value" key={title}>
-            <Icon size={24} strokeWidth={2.2} />
-            <div>
+            <div className="about-value__icon-wrapper">
+              <Icon size={22} strokeWidth={2.2} />
+            </div>
+            <div className="about-value__text">
               <h2>{title}</h2>
               <p>{description}</p>
             </div>

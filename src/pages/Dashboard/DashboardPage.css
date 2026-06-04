@@ -411,6 +411,60 @@
   }
 }
 
+@media (max-width: 680px) {
+  /* Habilitar reducción de tabla para ajustarse al ancho de pantalla */
+  .crud-table {
+    min-width: 0 !important;
+    width: 100%;
+  }
+
+  /* Ocultar columnas densas en productos: Imagen, Categoría, Precio, Stock, Estado */
+  .crud-table--products th:nth-child(2),
+  .crud-table--products td:nth-child(2),
+  .crud-table--products th:nth-child(4),
+  .crud-table--products td:nth-child(4),
+  .crud-table--products th:nth-child(5),
+  .crud-table--products td:nth-child(5),
+  .crud-table--products th:nth-child(6),
+  .crud-table--products td:nth-child(6),
+  .crud-table--products th:nth-child(7),
+  .crud-table--products td:nth-child(7) {
+    display: none !important;
+  }
+
+  /* Ocultar columnas densas en categorías: Slug, Descripción, Estado, Productos */
+  .crud-table--categories th:nth-child(3),
+  .crud-table--categories td:nth-child(3),
+  .crud-table--categories th:nth-child(4),
+  .crud-table--categories td:nth-child(4),
+  .crud-table--categories th:nth-child(5),
+  .crud-table--categories td:nth-child(5),
+  .crud-table--categories th:nth-child(6),
+  .crud-table--categories td:nth-child(6) {
+    display: none !important;
+  }
+
+  /* Ocultar columnas densas en clientes: Correo, Teléfono, Dirección */
+  .crud-table--customers th:nth-child(3),
+  .crud-table--customers td:nth-child(3),
+  .crud-table--customers th:nth-child(4),
+  .crud-table--customers td:nth-child(4),
+  .crud-table--customers th:nth-child(5),
+  .crud-table--customers td:nth-child(5) {
+    display: none !important;
+  }
+
+  /* Ocultar columnas densas en usuarios: Correo, Rol, Estado */
+  .crud-table--users th:nth-child(3),
+  .crud-table--users td:nth-child(3),
+  .crud-table--users th:nth-child(4),
+  .crud-table--users td:nth-child(4),
+  .crud-table--users th:nth-child(5),
+  .crud-table--users td:nth-child(5) {
+    display: none !important;
+  }
+}
+
 /* Sidebar disabled tab styling */
 .dashboard-sidebar__nav button.is-disabled {
   opacity: 0.45;
@@ -510,11 +564,13 @@
   border: 1px solid rgba(217, 225, 234, 0.95);
   border-radius: 8px;
   box-shadow: var(--shadow-soft);
-  overflow: hidden;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .crud-table {
   width: 100%;
+  min-width: 800px;
   border-collapse: collapse;
   text-align: left;
   font-size: 15px;

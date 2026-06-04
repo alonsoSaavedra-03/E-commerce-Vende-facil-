@@ -64,6 +64,10 @@ export function getProducts(dashboard = false) {
   return apiRequest(`/products${dashboard ? '?dashboard=1' : ''}`)
 }
 
+export function searchProducts(query) {
+  return apiRequest(`/products?search=${encodeURIComponent(query)}`)
+}
+
 export function getProduct(id) {
   return apiRequest(`/products/${id}`)
 }

@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { PackageSearch, ShoppingCart, Undo2 } from 'lucide-react'
+import { PackageSearch, ShoppingCart, Undo2, MessageCircle } from 'lucide-react'
 import { getProduct, getSettings } from '../../services/api'
+import { useCart } from '../../context/CartContext'
 import './ProductDetailPage.css'
 
 export function ProductDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { addToCart } = useCart()
   
   const [product, setProduct] = useState(null)
   const [settings, setSettings] = useState(null)
@@ -63,10 +65,22 @@ export function ProductDetailPage() {
   }
 
   function handleAddToCart() {
-    setShowToast(true)
-    setTimeout(() => {
-      setShowToast(false)
-    }, 4500)
+    if (product) {
+      addToCart(product, quantity)
+      setShowToast(true)
+      setTimeout(() => {
+        setShowToast(false)
+      }, 4500)
+    }
+  }
+
+  function handleQuoteWhatsapp() {
+    if (!product) return
+    const storeName = settings?.store_name || 'VendeFácil'
+    const message = `Hola ${storeName}, me interesa cotizar el producto: ${product.name} (Cantidad: ${quantity}, Precio Unitario: ${formatPrice(product.price)}).`
+    const phone = settings?.store_phone ? settings.store_phone.replace(/\D/g, '') : '51999999999'
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`
+    window.open(url, '_blank')
   }
 
   if (isLoading) {
@@ -169,6 +183,15 @@ export function ProductDetailPage() {
               >
                 <ShoppingCart size={20} strokeWidth={2.2} />
                 <span>Agregar al carrito</span>
+              </button>
+
+              <button 
+                type="button" 
+                className="btn-quote-whatsapp"
+                onClick={handleQuoteWhatsapp}
+              >
+                <MessageCircle size={20} strokeWidth={2.2} />
+                <span>Cotizar producto</span>
               </button>
             </div>
           )}

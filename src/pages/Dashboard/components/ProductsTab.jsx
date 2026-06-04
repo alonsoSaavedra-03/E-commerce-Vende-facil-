@@ -28,7 +28,7 @@ export function ProductsTab({
       </div>
 
       <div className="crud-table-wrapper">
-        <table className="crud-table">
+        <table className="crud-table crud-table--products">
           <thead>
             <tr>
               <th>ID</th>

@@ -66,7 +66,6 @@ export function LoginPage() {
 
         <nav className="login-navbar__links" aria-label="Navegacion de acceso">
           <Link to="/">Inicio</Link>
-          <Link to="/login">Register</Link>
         </nav>
 
         <Link className="login-navbar__action" to="/catalogo" aria-label="Ir al catalogo">
@@ -167,27 +166,6 @@ export function LoginPage() {
               {isLoading ? 'Iniciando sesión...' : 'Ingresar'}
             </button>
 
-            <div className="login-form__divider">
-              <span>o continuar con</span>
-            </div>
-
-            <button className="login-form__provider" type="button">
-              <span className="login-form__provider-icon login-form__provider-icon--google">
-                G
-              </span>
-              Continuar con Google
-            </button>
-
-            <button className="login-form__provider" type="button">
-              <span className="login-form__provider-icon login-form__provider-icon--github">
-                GH
-              </span>
-              Continuar con GitHub
-            </button>
-
-            <p className="login-form__register">
-              No tienes cuenta? <Link to="/login">Registrate aqui</Link>
-            </p>
           </form>
         </section>
       </main>
